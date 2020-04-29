@@ -20,7 +20,7 @@ datay = np.arange(0,10,0.1) # signal vector; create Fs samples
 dataz = np.arange(0,10,0.1)
 xx = 0
 yy = 0
-zz = 0
+hh = 0
 result = np.arange(0,10,0.1)
 data = np.arange(0,10,0.1)
 u = len(datax)
@@ -30,6 +30,8 @@ j = np.arange(u)
 k = np.arange(n)
 l = np.arange(m)
 T = n/Fs
+totalvecx=0
+totalvecy=0
 lildistance=np.arange(0,10,0.1)
 frq = k/T # a vector of frequencies; two sides frequency range 
 
@@ -40,18 +42,23 @@ serdev = '/dev/ttyACM0'
 
 s = serial.Serial(serdev)
 
-for a in range(0, 100):
+for a in range(0, 200):
 
     line=s.readline() # Read an echo string from K66F terminated with '\n'
 
     # print line
     
-    dataz[zz]=float(line)
-    zz=zz+1
+    if a%2==1:
+        datax[xx]=float(line)
+        xx=xx+1
+    elif a%2==0:
+        datay[yy]=float(line)
+        yy=yy+1  
 for b in range(0, 100):
-    lildistance[b] =float((1/2)*9.8*(dataz[b])*(0.1)*(0.1))
-    distance=distance+lildistance[b]
-    if (distance-lildistance[0])>=5:
+    totalvecx=totalvecx+((1/2)*(9.8)*(datax[b])*(0.1)*(0.1))
+    totalvecy=totalvecy+((1/2)*(9.8)*(datay[b])*(0.1)*(0.1))
+    lildistance[b] =float(((((totalvecx)**(2))+((totalvecy)**(2)))**(1/2)))
+    if (lildistance[b]-lildistance[0])>=0.05:
         result[b]=1
         b=b+1
     else:
