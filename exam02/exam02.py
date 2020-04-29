@@ -59,7 +59,7 @@ for b in range(0, 100):
     totalvecy=totalvecy+((1/2)*(9.8)*(datay[b])*(0.1)*(0.1))
     lildistance[b] =float(((((totalvecx)**(2))+((totalvecy)**(2)))**(1/2)))
     if (lildistance[b]-lildistance[0])>=0.05:
-        result[b]=1
+        result[b]=lildistance[b]
         b=b+1
     else:
         result[b]=0
@@ -76,11 +76,12 @@ for b in range(0, 100):
 
 fig, ax = plt.subplots(2, 1)
 
-ax[0].plot(t,dataz,label='z')
+ax[0].plot(t,datax,label='x')
+ax[0].plot(t,datay,label='y')
 
 ax[0].set_xlabel('Time')
 
-ax[0].set_ylabel('Z Acc Vector')
+ax[0].set_ylabel('Acc Vector')
 ax[0].legend
 
 ax[1].stem(t,result) # plotting the spectrum
