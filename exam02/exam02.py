@@ -8,7 +8,7 @@ import time
 
 
 Fs = 100.0  # sampling rate
-
+distance=0
  # sampling interval
 
 t = np.arange(0,10,0.1) # time vector; create Fs samples between 0 and 1.0 sec.
@@ -30,7 +30,7 @@ j = np.arange(u)
 k = np.arange(n)
 l = np.arange(m)
 T = n/Fs
-distance=np.arange(0,10,0.1)
+lildistance=np.arange(0,10,0.1)
 frq = k/T # a vector of frequencies; two sides frequency range 
 
 frq = frq[range(int(n/2))] # one side frequency range
@@ -49,9 +49,9 @@ for a in range(0, 100):
     dataz[zz]=float(line)
     zz=zz+1
 for b in range(0, 100):
-    distance[b] =float((1/2)*9.8*(dataz[b])*(0.1)*(0.1))
-
-    if (distance[b]-distance[0])>=0.05:
+    lildistance[b] =float((1/2)*9.8*(dataz[b])*(0.1)*(0.1))
+    distance=distance+lildistance[b]
+    if (distance-lildistance[0])>=5:
         result[b]=1
         b=b+1
     else:
