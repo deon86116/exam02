@@ -7,7 +7,7 @@ import serial
 import time
 
 
-Fs = 300.0  # sampling rate
+Fs = 100.0  # sampling rate
 
  # sampling interval
 
@@ -30,7 +30,7 @@ j = np.arange(u)
 k = np.arange(n)
 l = np.arange(m)
 T = n/Fs
-cos=np.arange(0,10,0.1)
+distance=np.arange(0,10,0.1)
 frq = k/T # a vector of frequencies; two sides frequency range 
 
 frq = frq[range(int(n/2))] # one side frequency range
@@ -40,25 +40,18 @@ serdev = '/dev/ttyACM0'
 
 s = serial.Serial(serdev)
 
-for a in range(0, int(Fs)):
+for a in range(0, 100):
 
     line=s.readline() # Read an echo string from K66F terminated with '\n'
 
     # print line
     
-    if a%3==1:
-        datax[xx]=float(line)
-        xx=xx+1
-    elif a%3==2:
-        datay[yy]=float(line)
-        yy=yy+1  
-    else:
-        dataz[zz]=float(line)
-        zz=zz+1
+    dataz[zz]=float(line)
+    zz=zz+1
 for b in range(0, 100):
-    cos[b] =float((datax[b]*datax[0])+(datay[b]*datay[0])+(dataz[b]*dataz[0]))/((((datax[b])**2)+((datay[b])**2)+((dataz[b])**2))**(1/2))*((((datax[0])**2)+((datay[0])**2)+((dataz[0])**2))**(1/2))
+    distance[b] =float((1/2)*9.8*(dataz[b])*(0.1)*(0.1))
 
-    if cos[b]<=(1/2)**(1/2):
+    if (distance[b]-distance[0])>=0.05:
         result[b]=1
         b=b+1
     else:
@@ -76,20 +69,18 @@ for b in range(0, 100):
 
 fig, ax = plt.subplots(2, 1)
 
-ax[0].plot(t,datax,label='x')
-ax[0].plot(t,datay,label='y')
 ax[0].plot(t,dataz,label='z')
 
 ax[0].set_xlabel('Time')
 
-ax[0].set_ylabel('Acc Vector')
+ax[0].set_ylabel('Z Acc Vector')
 ax[0].legend
 
 ax[1].stem(t,result) # plotting the spectrum
 
 ax[1].set_xlabel('Time')
 
-ax[1].set_ylabel('Tilt')
+ax[1].set_ylabel('Displacement')
 
 plt.show()
 

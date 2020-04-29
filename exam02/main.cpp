@@ -141,8 +141,7 @@ void info(){
 
       t[2] = ((float)acc16) / 4096.0f;
 
-      pc.printf("%1.4f\r\n", t[0]);
-      pc.printf("%1.4f\r\n", t[1]);
+      
       pc.printf("%1.4f\r\n", t[2]);
     
       wait(0.1);
